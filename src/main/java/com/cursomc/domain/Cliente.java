@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.cursomc.domain.enums.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -38,6 +39,7 @@ public class Cliente {
 	@CollectionTable(name="TB_TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 	
+	@JsonBackReference
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	
