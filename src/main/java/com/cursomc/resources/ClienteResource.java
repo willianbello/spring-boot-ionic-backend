@@ -35,7 +35,13 @@ public class ClienteResource {
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 		Cliente resposta = clienteService.find(id);
-		return ResponseEntity.ok(resposta);
+		return ResponseEntity.ok().body(resposta);
+	}
+	
+	@RequestMapping(value = "/email", method =  RequestMethod.GET)
+	public ResponseEntity<Cliente> findByEmail(@RequestParam(value = "value") String email) {
+		Cliente resposta = clienteService.findByEmail(email);
+		return ResponseEntity.ok().body(resposta);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
