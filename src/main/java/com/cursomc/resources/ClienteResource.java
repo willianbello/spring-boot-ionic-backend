@@ -24,6 +24,7 @@ import com.cursomc.domain.dto.ClienteNewDTO;
 import com.cursomc.services.ClienteService;
 
 import ch.qos.logback.core.net.server.Client;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value="/clientes")
@@ -32,18 +33,21 @@ public class ClienteResource {
 	@Autowired
 	private ClienteService clienteService;
 	
+	@ApiOperation(value = "Busca Cliente por ID")
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 		Cliente resposta = clienteService.find(id);
 		return ResponseEntity.ok().body(resposta);
 	}
 	
+	@ApiOperation(value = "Busca Cliente por Email")
 	@RequestMapping(value = "/email", method =  RequestMethod.GET)
 	public ResponseEntity<Cliente> findByEmail(@RequestParam(value = "value") String email) {
 		Cliente resposta = clienteService.findByEmail(email);
 		return ResponseEntity.ok().body(resposta);
 	}
 	
+	@ApiOperation(value = "Insere Cliente")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO clienteNewDTO) {
 		Cliente cliente = clienteService.fromDTO(clienteNewDTO);
@@ -57,6 +61,7 @@ public class ClienteResource {
 				
 	}
 	
+	@ApiOperation(value = "Atualiza Cliente")
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Client> update(@Valid @RequestBody ClienteDTO clienteDTO, @PathVariable Integer id) {
 		Cliente cliente = clienteService.fromDTO(clienteDTO);
@@ -65,6 +70,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation(value = "Deleta Cliente")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
@@ -73,6 +79,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation(value = "Busca todos Cliente")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> findAll() {
@@ -82,7 +89,9 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
+	@ApiOperation(value = "Busca paginada de Cliente")
 	@PreAuthorize("hasAnyRole('ADMIN')")
+	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ResponseEntity<Page<ClienteDTO>> findPage(
 		@RequestParam(value = "page", defaultValue = "0") Integer page,
 		@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
